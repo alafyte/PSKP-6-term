@@ -127,12 +127,12 @@
 			"response": []
 		},
 		{
-			"name": "api/faculty/ЛХФ/pulpits",
+			"name": "api/faculty/ЛХФ/subjects",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/faculty/ЛХФ/pulpits",
+					"raw": "http://localhost:3000/api/faculty/ЛХФ/subjects",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -142,7 +142,7 @@
 						"api",
 						"faculty",
 						"ЛХФ",
-						"pulpits"
+						"subjects"
 					]
 				}
 			},

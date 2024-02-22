@@ -1,11 +1,15 @@
 const Sequelize = require('sequelize');
 const {Transaction} = require("sequelize");
 
-const sequelize = new Sequelize('RNA', 'User1', 'user1', {host: 'localhost', dialect: 'mssql', define: {
+const sequelize = new Sequelize('RNA', 'User1', 'user1', {
+    host: 'localhost', dialect: 'mssql', define: {
         hooks: {
-            beforeBulkDestroy: (instance, options) => {console.log('Before destroy');},
+            beforeBulkDestroy: (instance, options) => {
+                console.log('Before destroy');
+            },
         }
-    }, });
+    },
+});
 const Op = Sequelize.Op;
 const {Faculty, Pulpit, Teacher, Subject, Auditorium_type, Auditorium} = require('./models').ORM(sequelize);
 
@@ -32,11 +36,22 @@ class DB {
     }
 
     getSubjectsByFaculty = async (faculty) => {
-        let fac = await this.connection.then(() => Faculty.findByPk(faculty));
-        if (fac === null) {
+        const foundFaculty = await this.connection.then(() => Faculty.findByPk(faculty));
+        if (!foundFaculty) {
             throw new Error("Faculty does not exist");
         }
-        return this.connection.then(() => Pulpit.findAll({where: {faculty: faculty}}));
+
+        const pulpitList = await this.connection.then(() => Pulpit.findAll({
+            where: {faculty: faculty},
+            include: [{
+                model: Subject,
+                as: 'Subjects'
+            }]
+        }));
+
+        const subjects = pulpitList.flatMap(pulpit => pulpit.Subjects);
+
+        return subjects;
     }
     getAuditoriumsByAuditoriumType = async (audType) => {
         let type = await this.connection.then(() => Auditorium_type.findByPk(audType));
@@ -44,7 +59,13 @@ class DB {
             throw new Error("Auditorium type does not exist");
         }
 
-        return this.connection.then(() => Auditorium.findAll({where: {auditorium_type: audType}}))
+        return await this.connection.then(() => Auditorium.findAll({
+            where: { auditorium_type: audType },
+            include: [{
+                model: Auditorium_type,
+                as: 'auditoriumType'
+            }]
+        }));
     }
 
     getAuditoriumsBetween10And60 = () => {
@@ -201,7 +222,7 @@ class DB {
     }
 
     auditoriumsTransaction = async () => {
-        const t = await sequelize.transaction({ isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
+        const t = await sequelize.transaction({isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED});
         await Auditorium.update({auditorium_capacity: 0}, {
             where: {auditorium_capacity: {[Op.gte]: 0}},
             transaction: t

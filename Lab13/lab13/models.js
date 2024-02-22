@@ -89,6 +89,10 @@ function internalORM(sequelize) {
         }
     );
 
+    Pulpit.hasMany(Subject, { foreignKey: 'pulpit', sourceKey: 'pulpit' });
+    Subject.belongsTo(Pulpit, { foreignKey: 'pulpit', targetKey: 'pulpit' });
+
+
     Auditorium_type.init(
         {
             auditorium_type: {type: Sequelize.STRING, allowNull: false, primaryKey: true},
@@ -120,13 +124,17 @@ function internalORM(sequelize) {
         }
     );
 
+    Auditorium.belongsTo(Auditorium_type, { foreignKey: 'auditorium_type', as: 'auditoriumType' });
+    Auditorium_type.hasMany(Auditorium, { foreignKey: 'auditorium_type', as: 'auditoriums' });
+
+
     Auditorium.addScope('auditoriumsBetween10And60',{
         where: {
             auditorium_capacity: {
                 [op.between]: [10, 60]
             }
         }
-    })
+    });
 }
 
 exports.ORM = (s) => {

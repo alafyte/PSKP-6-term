@@ -1,0 +1,19 @@
+<div class="container mt-4">
+    <h1 class="text-center">Добавить контакт</h1>
+    <form class="form w-25 mx-auto">
+        <div class="form-group">
+            <label for="name" class="form-label">ФИО</label>
+            <input class="form-control" type="text" required name="name" id="name">
+        </div>
+        <div class="form-group">
+            <label for="phone" class="form-label">Телефон</label>
+            <input class="form-control" type="tel" required name="phone" id="phone">
+        </div>
+    </form>
+
+
+    <div class="container w-25 mt-4 d-flex flex-row justify-content-between">
+        <button class="btn btn-primary" onclick="addContact()">Добавить</button>
+        <button class="btn btn-primary" onclick="{{dismiss}}">Назад</button>
+    </div>
+</div>

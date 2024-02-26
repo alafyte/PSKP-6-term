@@ -1,0 +1,22 @@
+<div class="container mt-4">
+    <h1 class="text-center">Изменить контакт</h1>
+    <form class="form w-25 mx-auto" data-key="{{thisContact.id}}">
+        <div class="form-group">
+            <label for="name" class="form-label">ФИО</label>
+            <input class="form-control" id="name" type="text" required name="name" value="{{thisContact.name}}"
+                   oninput="blockButton('{{thisContact.name}}', '{{thisContact.phone}}')">
+        </div>
+        <div class="form-group">
+            <label for="phone" class="form-label">Телефон</label>
+            <input class="form-control" type="tel" required name="phone" id="phone" value="{{thisContact.phone}}"
+                   oninput="blockButton('{{thisContact.name}}', '{{thisContact.phone}}')">
+        </div>
+    </form>
+
+
+    <div class="container w-25 mt-4 d-flex flex-row justify-content-between">
+        <button class="btn btn-primary" onclick="editContact()">Изменить</button>
+        <button class="btn btn-primary" onclick="deleteContact()" id="delete-button">Удалить</button>
+        <button class="btn btn-primary" onclick="{{dismiss}}">Назад</button>
+    </div>
+</div>

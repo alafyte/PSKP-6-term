@@ -1,0 +1,16 @@
+<div class="container mt-4">
+
+    <a href="/add" class="btn btn-primary">Добавить</a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ФИО</th>
+            <th scope="col">Телефон</th>
+        </tr>
+        </thead>
+        {{#each contacts}}
+            {{> contact}}
+        {{/each}}
+    </table>
+</div>

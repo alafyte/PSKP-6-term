@@ -1,0 +1,8 @@
+{
+  "username": "User1",
+  "password": "user1",
+  "database": "Telegram",
+  "host": "localhost",
+  "dialect": "mssql",
+  "operatorsAliases": 0
+}
